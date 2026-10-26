@@ -1,0 +1,52 @@
+/**
+ * @license
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+import React from 'react';
+import { AppProvider, useApp } from './context/AppContext';
+import { MobileFrameWrapper } from './components/MobileFrameWrapper';
+import { Header } from './components/Header';
+import { MonthlyDashboard } from './components/MonthlyDashboard';
+import { TransactionList } from './components/TransactionList';
+import { AnalyticsView } from './components/AnalyticsView';
+import { ReportsView } from './components/ReportsView';
+import { SettingsAndSchemaView } from './components/SettingsAndSchemaView';
+import { BottomNav } from './components/BottomNav';
+import { TransactionBottomSheet } from './components/TransactionBottomSheet';
+
+const MainScreen: React.FC = () => {
+  const { activeTab } = useApp();
+
+  return (
+    <div className="flex-1 flex flex-col relative w-full bg-slate-950 text-slate-100 min-h-full">
+      {/* Top Mobile App Header */}
+      <Header />
+
+      {/* Main Tab Screens */}
+      <main className="flex-1 w-full">
+        {activeTab === 'dashboard' && <MonthlyDashboard />}
+        {activeTab === 'transactions' && <TransactionList />}
+        {activeTab === 'analytics' && <AnalyticsView />}
+        {activeTab === 'reports' && <ReportsView />}
+        {activeTab === 'settings' && <SettingsAndSchemaView />}
+      </main>
+
+      {/* 5-Second Transaction Entry Bottom Sheet / Drawer */}
+      <TransactionBottomSheet />
+
+      {/* Thumb-friendly Mobile Bottom Navigation */}
+      <BottomNav />
+    </div>
+  );
+};
+
+export default function App() {
+  return (
+    <AppProvider>
+      <MobileFrameWrapper>
+        <MainScreen />
+      </MobileFrameWrapper>
+    </AppProvider>
+  );
+}
